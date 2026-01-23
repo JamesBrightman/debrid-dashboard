@@ -24,6 +24,7 @@ export const KeyInput: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="flex gap-2">
       <input
+        suppressHydrationWarning
         className="outline-solid"
         value={localKeyVal}
         onChange={(e) => setLocalKeyVal(e.target.value)}

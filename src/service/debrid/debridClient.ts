@@ -7,7 +7,8 @@ export const getDebridTokenFromStorage = (): string | null => {
   if (typeof window === "undefined") {
     return null;
   }
-  return localStorage.getItem("debrid-key");
+
+  return localStorage.getItem("debrid-key")?.slice(1, -1) ?? null;
 };
 
 /**

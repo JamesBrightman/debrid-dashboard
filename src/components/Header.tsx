@@ -1,6 +1,6 @@
 "use server";
 
-import { DebridServerTime } from "./DebridServerTime";
+import { DebridServerTime } from "./debrid-response/DebridServerTime";
 
 export const Header: React.FC = async () => {
   return (

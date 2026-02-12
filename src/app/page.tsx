@@ -1,6 +1,6 @@
 import { KeyInput } from "@/components/KeyInput";
-import { DebridSettings } from "@/components/DebridSettings";
-import { DebridUser } from "@/components/DebridUser";
+import { DebridSettings } from "@/components/debrid-response/DebridSettings";
+import { DebridUser } from "@/components/debrid-response/DebridUser";
 import { UserSummary } from "@/components/UserSummary";
 
 export default function Home() {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Header } from "@/components/Header";
 import { ClientProvider } from "@/service/debrid/ClientProvider";
 import "./globals.css";
 
@@ -28,7 +29,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientProvider>{children}</ClientProvider>
+        <ClientProvider>
+          <div className="min-h-screen bg-zinc-100">
+            <Header />
+            {children}
+          </div>
+        </ClientProvider>
       </body>
     </html>
   );

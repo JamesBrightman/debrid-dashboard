@@ -26,7 +26,6 @@ export const KeyInput: React.FC = () => {
         id="debrid-key"
         type="password"
         autoComplete="off"
-        spellCheck={false}
         className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none ring-zinc-800 transition focus:ring-2"
         value={localKeyVal}
         onChange={(e) => setLocalKeyVal(e.target.value)}

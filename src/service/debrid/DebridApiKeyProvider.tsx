@@ -33,9 +33,12 @@ export function DebridApiKeyProvider({
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    const storedKey = window.localStorage.getItem(STORAGE_KEY) ?? "";
-    setApiKeyState(storedKey);
-    setIsHydrated(true);
+    // Hydrate token from session storage after mount to avoid SSR/client mismatch.
+    const storedKey = window.sessionStorage.getItem(STORAGE_KEY) ?? "";
+    queueMicrotask(() => {
+      setApiKeyState(storedKey);
+      setIsHydrated(true);
+    });
   }, []);
 
   const setApiKey = useCallback(
@@ -43,9 +46,9 @@ export function DebridApiKeyProvider({
       const nextKey = key.trim();
 
       if (nextKey) {
-        window.localStorage.setItem(STORAGE_KEY, nextKey);
+        window.sessionStorage.setItem(STORAGE_KEY, nextKey);
       } else {
-        window.localStorage.removeItem(STORAGE_KEY);
+        window.sessionStorage.removeItem(STORAGE_KEY);
       }
 
       setApiKeyState(nextKey);

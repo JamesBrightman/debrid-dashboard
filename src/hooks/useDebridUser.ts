@@ -8,7 +8,7 @@ export const useDebridUser = () => {
   const { apiKey, hasKey } = useDebridApiKey();
 
   return useQuery({
-    queryKey: ["debrid", "user", apiKey],
+    queryKey: ["debrid", "user"],
     enabled: hasKey,
     queryFn: () => getUser(apiKey),
   });

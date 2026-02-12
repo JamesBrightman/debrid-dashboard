@@ -23,6 +23,18 @@ export const KeyInput: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-3">
+      {/* hidden username field for password input for accessbility */}
+      <label htmlFor="debrid-username" className="sr-only">
+        Username
+      </label>
+      <input
+        id="debrid-username"
+        name="username"
+        type="text"
+        autoComplete="username"
+        className="sr-only"
+        tabIndex={-1}
+      />
       <label
         htmlFor="debrid-key"
         className="block text-sm font-semibold text-[color:var(--foreground)]"

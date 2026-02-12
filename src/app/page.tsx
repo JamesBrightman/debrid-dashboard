@@ -1,4 +1,5 @@
 import { KeyInput } from "@/components/KeyInput";
+import { DangerZone } from "@/components/danger-zone/DangerZone";
 import { DebridSettings } from "@/components/debrid-response/DebridSettings";
 import { DebridUser } from "@/components/debrid-response/DebridUser";
 import { UserSummary } from "@/components/UserSummary";
@@ -21,6 +22,10 @@ export default function Home() {
         <div className="card-shell p-6 sm:p-8">
           <DebridSettings />
         </div>
+      </section>
+
+      <section className="w-full">
+        <DangerZone />
       </section>
     </div>
   );

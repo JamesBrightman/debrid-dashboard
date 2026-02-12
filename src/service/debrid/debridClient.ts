@@ -11,6 +11,10 @@ import {
   settingsResponseSchema,
   type SettingsResponse,
 } from "@/types/response/settingsResponse";
+import {
+  disableAccessTokenResponseSchema,
+  type DisableAccessTokenResponse,
+} from "@/types/response/disableAccessTokenResponse";
 
 const debridClient = axios.create({
   baseURL: "https://api.real-debrid.com/rest/1.0",
@@ -45,4 +49,12 @@ export const getServerTime = async (): Promise<ServerTimeResponse> => {
   const { data } = await debridClient.get<unknown>("/time/iso");
 
   return serverTimeResponseSchema.parse(data);
+};
+
+export const getDisableAccessToken = async (
+  token: string,
+): Promise<DisableAccessTokenResponse> => {
+  const data = await debridGet<unknown>("/disable_access_token", token);
+
+  return disableAccessTokenResponseSchema.parse(data);
 };

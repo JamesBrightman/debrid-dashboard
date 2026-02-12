@@ -1,36 +1,44 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { useLocalStorageState } from "ahooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 
 export const KeyInput: React.FC = () => {
-  const queryClient = useQueryClient();
+  const { apiKey, setApiKey } = useDebridApiKey();
+  const [localKeyVal, setLocalKeyVal] = useState(apiKey);
+  const hasChanged = localKeyVal.trim() !== apiKey;
 
-  const [savedValue, setSavedValue] =
-    useLocalStorageState<string>("debrid-key");
-
-  const [localKeyVal, setLocalKeyVal] = useState<string>(savedValue ?? "");
+  useEffect(() => {
+    setLocalKeyVal(apiKey);
+  }, [apiKey]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSavedValue(localKeyVal);
-
-    // Trigger refetches
-    queryClient.invalidateQueries({ queryKey: ["debrid-settings"] });
-    queryClient.invalidateQueries({ queryKey: ["debrid-user"] });
+    setApiKey(localKeyVal);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="w-full space-y-2">
+      <label htmlFor="debrid-key" className="block text-sm font-medium">
+        Real-Debrid API token
+      </label>
       <input
-        suppressHydrationWarning
-        className="outline-solid"
+        id="debrid-key"
+        type="password"
+        autoComplete="off"
+        spellCheck={false}
+        className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none ring-zinc-800 transition focus:ring-2"
         value={localKeyVal}
         onChange={(e) => setLocalKeyVal(e.target.value)}
-        placeholder="Enter API key"
+        placeholder="Enter API token"
       />
-      <button type="submit">Submit</button>
+      <button
+        type="submit"
+        disabled={!hasChanged}
+        className="rounded-md bg-zinc-900 px-3 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Save token
+      </button>
     </form>
   );
 };

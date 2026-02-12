@@ -1,52 +1,22 @@
 import axios from "axios";
 
-/**
- * Helper to get debrid token from localStorage (client-side only)
- */
-export const getDebridTokenFromStorage = (): string | null => {
-  if (typeof window === "undefined") {
-    return null;
-  }
+const debridClient = axios.create({
+  baseURL: "https://api.real-debrid.com/rest/1.0",
+  headers: {
+    Accept: "application/json",
+  },
+});
 
-  return localStorage.getItem("debrid-key")?.slice(1, -1) ?? null;
-};
-
-/**
- * Creates an Axios client for Real-Debrid API
- */
-export const createClient = () => {
-  const instance = axios.create({
-    baseURL: "https://api.real-debrid.com/rest/1.0",
+const debridGet = async <T>(path: string, token: string): Promise<T> => {
+  const { data } = await debridClient.get<T>(path, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
-  // Add request interceptor to inject auth token
-  instance.interceptors.request.use((config) => {
-    const token = getDebridTokenFromStorage();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
-
-  return instance;
+  return data;
 };
 
-export const client = createClient();
+export const getSettings = (token: string) => debridGet("/settings", token);
 
-/**
- * Gets user settings from Real-Debrid
- */
-export const getSettings = async () => {
-  return (await client.get("/settings")).data;
-};
-
-/**
- * Gets user from Real-Debrid
- */
-export const getUser = async () => {
-  return (await client.get("/user")).data;
-};
+export const getUser = (token: string) => debridGet("/user", token);

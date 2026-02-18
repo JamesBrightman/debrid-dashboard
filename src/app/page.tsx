@@ -1,5 +1,7 @@
 import { DangerZone } from "@/components/danger-zone/DangerZone";
 import { DebridSettings } from "@/components/debrid-response/DebridSettings";
+import { DebridTraffic } from "@/components/debrid-response/DebridTraffic";
+import { DebridTrafficDetails } from "@/components/debrid-response/DebridTrafficDetails";
 import { DebridUser } from "@/components/debrid-response/DebridUser";
 import { UserSummary } from "@/components/UserSummary";
 
@@ -16,6 +18,12 @@ export default function Home() {
         </div>
         <div className="card-shell p-6 sm:p-8">
           <DebridSettings />
+        </div>
+        <div className="card-shell p-6 sm:p-8">
+          <DebridTraffic />
+        </div>
+        <div className="card-shell p-6 sm:p-8">
+          <DebridTrafficDetails />
         </div>
       </section>
 

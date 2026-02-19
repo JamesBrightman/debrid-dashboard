@@ -25,6 +25,10 @@ import {
   disableAccessTokenResponseSchema,
   type DisableAccessTokenResponse,
 } from "@/types/response/disableAccessTokenResponse";
+import {
+  downloadsResponseSchema,
+  type DownloadsResponse,
+} from "@/types/response/downloadsResponse";
 
 const debridClient = axios.create({
   baseURL: "https://api.real-debrid.com/rest/1.0",
@@ -36,7 +40,7 @@ const debridClient = axios.create({
 const debridGet = async <T>(
   path: string,
   token: string,
-  params?: Record<string, string>,
+  params?: Record<string, string | number>,
 ): Promise<T> => {
   const { data } = await debridClient.get<T>(path, {
     headers: {
@@ -46,6 +50,14 @@ const debridGet = async <T>(
   });
 
   return data;
+};
+
+const debridDelete = async (path: string, token: string): Promise<void> => {
+  await debridClient.delete(path, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getSettings = async (token: string): Promise<SettingsResponse> => {
@@ -88,4 +100,36 @@ export const getDisableAccessToken = async (
   const data = await debridGet("/disable_access_token", token);
 
   return disableAccessTokenResponseSchema.parse(data);
+};
+
+type GetDownloadsOptions = {
+  offset?: number;
+  page?: number;
+  limit?: number;
+};
+
+export const getDownloads = async (
+  token: string,
+  options?: GetDownloadsOptions,
+): Promise<DownloadsResponse> => {
+  const rawLimit = Number.isFinite(options?.limit) ? options.limit! : 20;
+  const limit = Math.min(5000, Math.max(0, Math.trunc(rawLimit)));
+
+  const params: Record<string, number> = { limit };
+  if (Number.isFinite(options?.page)) {
+    params.page = Math.max(0, Math.trunc(options.page!));
+  } else if (Number.isFinite(options?.offset)) {
+    params.offset = Math.max(0, Math.trunc(options.offset!));
+  }
+
+  const data = await debridGet("/downloads", token, params);
+
+  return downloadsResponseSchema.parse(data);
+};
+
+export const deleteDownload = async (
+  token: string,
+  id: string,
+): Promise<void> => {
+  await debridDelete(`/downloads/delete/${encodeURIComponent(id)}`, token);
 };

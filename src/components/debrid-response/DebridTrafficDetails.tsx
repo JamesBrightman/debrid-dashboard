@@ -35,7 +35,9 @@ const formatBytes = (bytes: number): string => {
   return `${bytes} B`;
 };
 
-const getTimeline = (data: TrafficDetailsResponse | undefined): TimelineItem[] => {
+const getTimeline = (
+  data: TrafficDetailsResponse | undefined,
+): TimelineItem[] => {
   const today = new Date();
 
   return Array.from({ length: 7 }, (_, index) => {

@@ -1,4 +1,5 @@
 import { DebridDisableAccessToken } from "@/components/debrid-response/DebridDisableAccessToken";
+import { DebridResetAvatar } from "@/components/debrid-response/DebridResetAvatar";
 
 export const DangerZone: React.FC = () => {
   return (
@@ -6,6 +7,9 @@ export const DangerZone: React.FC = () => {
       <h2 className="text-xl font-semibold text-red-500">Danger Zone</h2>
       <div className="mt-4">
         <DebridDisableAccessToken />
+      </div>
+      <div className="mt-4">
+        <DebridResetAvatar />
       </div>
     </section>
   );

@@ -126,6 +126,10 @@ export const getDisableAccessToken = async (
   return disableAccessTokenResponseSchema.parse(data);
 };
 
+export const deleteSettingsAvatar = async (token: string): Promise<void> => {
+  await debridDelete("/settings/avatarDelete", token);
+};
+
 type GetDownloadsOptions = {
   offset?: number;
   page?: number;

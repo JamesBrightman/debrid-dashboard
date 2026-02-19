@@ -29,6 +29,18 @@ import {
   downloadsResponseSchema,
   type DownloadsResponse,
 } from "@/types/response/downloadsResponse";
+import {
+  torrentsResponseSchema,
+  type TorrentsResponse,
+} from "@/types/response/torrentsResponse";
+import {
+  torrentsActiveCountResponseSchema,
+  type TorrentsActiveCountResponse,
+} from "@/types/response/torrentsActiveCountResponse";
+import {
+  torrentsAvailableHostsResponseSchema,
+  type TorrentsAvailableHostsResponse,
+} from "@/types/response/torrentsAvailableHostsResponse";
 
 const debridClient = axios.create({
   baseURL: "https://api.real-debrid.com/rest/1.0",
@@ -132,4 +144,57 @@ export const deleteDownload = async (
   id: string,
 ): Promise<void> => {
   await debridDelete(`/downloads/delete/${encodeURIComponent(id)}`, token);
+};
+
+type GetTorrentsOptions = {
+  offset?: number;
+  page?: number;
+  limit?: number;
+  filter?: "active";
+};
+
+export const getTorrents = async (
+  token: string,
+  options?: GetTorrentsOptions,
+): Promise<TorrentsResponse> => {
+  const rawLimit = Number.isFinite(options?.limit) ? options.limit! : 20;
+  const limit = Math.min(5000, Math.max(0, Math.trunc(rawLimit)));
+
+  const params: Record<string, string | number> = { limit };
+  if (Number.isFinite(options?.page)) {
+    params.page = Math.max(0, Math.trunc(options.page!));
+  } else if (Number.isFinite(options?.offset)) {
+    params.offset = Math.max(0, Math.trunc(options.offset!));
+  }
+
+  if (options?.filter === "active") {
+    params.filter = "active";
+  }
+
+  const data = await debridGet("/torrents", token, params);
+
+  return torrentsResponseSchema.parse(data);
+};
+
+export const deleteTorrent = async (
+  token: string,
+  id: string,
+): Promise<void> => {
+  await debridDelete(`/torrents/delete/${encodeURIComponent(id)}`, token);
+};
+
+export const getTorrentsActiveCount = async (
+  token: string,
+): Promise<TorrentsActiveCountResponse> => {
+  const data = await debridGet("/torrents/activeCount", token);
+
+  return torrentsActiveCountResponseSchema.parse(data);
+};
+
+export const getTorrentsAvailableHosts = async (
+  token: string,
+): Promise<TorrentsAvailableHostsResponse> => {
+  const data = await debridGet("/torrents/availableHosts", token);
+
+  return torrentsAvailableHostsResponseSchema.parse(data);
 };

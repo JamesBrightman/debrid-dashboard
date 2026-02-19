@@ -3,6 +3,9 @@ import { DebridDownloads } from "@/components/debrid-response/DebridDownloads";
 import { DebridSettings } from "@/components/debrid-response/DebridSettings";
 import { DebridTraffic } from "@/components/debrid-response/DebridTraffic";
 import { DebridTrafficDetails } from "@/components/debrid-response/DebridTrafficDetails";
+import { DebridTorrentsActiveCount } from "@/components/debrid-response/DebridTorrentsActiveCount";
+import { DebridTorrentsAvailableHosts } from "@/components/debrid-response/DebridTorrentsAvailableHosts";
+import { DebridTorrents } from "@/components/debrid-response/DebridTorrents";
 import { DebridUser } from "@/components/debrid-response/DebridUser";
 import { UserSummary } from "@/components/UserSummary";
 
@@ -28,6 +31,15 @@ export default function Home() {
         </div>
         <div className="card-shell p-6 sm:p-8">
           <DebridDownloads />
+        </div>
+        <div className="card-shell p-6 sm:p-8">
+          <DebridTorrents />
+        </div>
+        <div className="card-shell p-6 sm:p-8">
+          <DebridTorrentsActiveCount />
+        </div>
+        <div className="card-shell p-6 sm:p-8">
+          <DebridTorrentsAvailableHosts />
         </div>
       </section>
 

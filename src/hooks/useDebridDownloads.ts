@@ -9,8 +9,8 @@ export const useDebridDownloads = (): UseQueryResult<DownloadsResponse, Error> =
   const { apiKey, hasKey } = useDebridApiKey();
 
   return useQuery({
-    queryKey: ["debrid", "downloads", { limit: 20 }],
+    queryKey: ["debrid", "downloads"],
     enabled: hasKey,
-    queryFn: () => getDownloads(apiKey, { limit: 20 }),
+    queryFn: () => getDownloads(apiKey),
   });
 };

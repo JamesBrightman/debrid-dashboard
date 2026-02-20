@@ -9,8 +9,8 @@ export const useDebridTorrents = (): UseQueryResult<TorrentsResponse, Error> => 
   const { apiKey, hasKey } = useDebridApiKey();
 
   return useQuery({
-    queryKey: ["debrid", "torrents", { limit: 20 }],
+    queryKey: ["debrid", "torrents"],
     enabled: hasKey,
-    queryFn: () => getTorrents(apiKey, { limit: 20 }),
+    queryFn: () => getTorrents(apiKey),
   });
 };

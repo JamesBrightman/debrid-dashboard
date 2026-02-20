@@ -141,14 +141,13 @@ export const getDownloads = async (
   options?: GetDownloadsOptions,
 ): Promise<DownloadsResponse> => {
   const limitInput = options?.limit;
-  const rawLimit = typeof limitInput === "number" && Number.isFinite(limitInput)
-    ? limitInput
-    : 20;
-  const limit = Math.min(5000, Math.max(0, Math.trunc(rawLimit)));
-
-  const params: Record<string, number> = { limit };
+  const params: Record<string, number> = {};
   const pageInput = options?.page;
   const offsetInput = options?.offset;
+
+  if (typeof limitInput === "number" && Number.isFinite(limitInput)) {
+    params.limit = Math.min(5000, Math.max(0, Math.trunc(limitInput)));
+  }
 
   if (typeof pageInput === "number" && Number.isFinite(pageInput)) {
     params.page = Math.max(0, Math.trunc(pageInput));
@@ -156,7 +155,11 @@ export const getDownloads = async (
     params.offset = Math.max(0, Math.trunc(offsetInput));
   }
 
-  const data = await debridGet("/downloads", token, params);
+  const data = await debridGet(
+    "/downloads",
+    token,
+    Object.keys(params).length > 0 ? params : undefined,
+  );
 
   return downloadsResponseSchema.parse(data);
 };
@@ -180,14 +183,13 @@ export const getTorrents = async (
   options?: GetTorrentsOptions,
 ): Promise<TorrentsResponse> => {
   const limitInput = options?.limit;
-  const rawLimit = typeof limitInput === "number" && Number.isFinite(limitInput)
-    ? limitInput
-    : 20;
-  const limit = Math.min(5000, Math.max(0, Math.trunc(rawLimit)));
-
-  const params: Record<string, string | number> = { limit };
+  const params: Record<string, string | number> = {};
   const pageInput = options?.page;
   const offsetInput = options?.offset;
+
+  if (typeof limitInput === "number" && Number.isFinite(limitInput)) {
+    params.limit = Math.min(5000, Math.max(0, Math.trunc(limitInput)));
+  }
 
   if (typeof pageInput === "number" && Number.isFinite(pageInput)) {
     params.page = Math.max(0, Math.trunc(pageInput));
@@ -199,7 +201,11 @@ export const getTorrents = async (
     params.filter = "active";
   }
 
-  const data = await debridGet("/torrents", token, params);
+  const data = await debridGet(
+    "/torrents",
+    token,
+    Object.keys(params).length > 0 ? params : undefined,
+  );
 
   return torrentsResponseSchema.parse(data);
 };

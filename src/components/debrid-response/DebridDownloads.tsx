@@ -1,10 +1,16 @@
 "use client";
 
+import { useMemo, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "@/components/table/DataTable";
+import { PaginationControls } from "@/components/table/PaginationControls";
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDeleteDebridDownload } from "@/hooks/useDeleteDebridDownload";
 import { useDebridDownloads } from "@/hooks/useDebridDownloads";
 import type { DownloadItem } from "@/types/response/downloadsResponse";
 import { formatBytes } from "@/utils/formatBytes";
+
+const PAGE_SIZE = 20;
 
 const formatGeneratedDate = (value: string): string => {
   const date = new Date(value);
@@ -16,56 +22,69 @@ const formatGeneratedDate = (value: string): string => {
   return date.toLocaleDateString();
 };
 
-type DownloadRowProps = {
-  item: DownloadItem;
-  isDeleting: boolean;
-  onDelete: (id: string) => void;
-};
-
-const DownloadRow: React.FC<DownloadRowProps> = ({
-  item,
-  isDeleting,
-  onDelete,
-}) => {
-  return (
-    <li className="rounded-lg border border-[color:var(--border)] bg-white p-3">
-      <p className="truncate text-sm font-medium text-[color:var(--foreground)]">
-        {item.filename}
-      </p>
-      <p className="mt-1 text-xs text-[color:var(--muted)]">
-        {formatBytes(item.filesize, { unknownWhenZero: true })}
-      </p>
-      <div className="mt-2 flex items-center justify-between gap-3">
-        <span className="text-xs text-[color:var(--muted)]">
-          {formatGeneratedDate(item.generated)}
-        </span>
-        <div className="flex items-center gap-2">
+export const DebridDownloads: React.FC = () => {
+  const { hasKey } = useDebridApiKey();
+  const { data, isLoading, error } = useDebridDownloads();
+  const [page, setPage] = useState(0);
+  const deleteMutation = useDeleteDebridDownload();
+  const downloads = data ?? [];
+  const totalPages = Math.max(1, Math.ceil(downloads.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages - 1);
+  const deletingId = deleteMutation.isPending ? deleteMutation.variables : null;
+  const columns = useMemo<Array<ColumnDef<DownloadItem>>>(
+    () => [
+      {
+        header: "Filename",
+        accessorKey: "filename",
+        cell: ({ row }) => (
+          <span className="block max-w-[18rem] truncate">
+            {row.original.filename}
+          </span>
+        ),
+      },
+      {
+        header: "Size",
+        accessorKey: "filesize",
+        cell: ({ row }) => formatBytes(row.original.filesize, { unknownWhenZero: true }),
+      },
+      {
+        header: "Generated",
+        accessorKey: "generated",
+        cell: ({ row }) => formatGeneratedDate(row.original.generated),
+      },
+      {
+        id: "download",
+        header: "Download",
+        enableSorting: false,
+        cell: ({ row }) => (
           <a
-            href={item.download}
+            href={row.original.download}
             target="_blank"
             rel="noreferrer"
             className="rounded-md border border-[color:var(--border)] px-2 py-1 text-xs font-medium text-[color:var(--foreground)] hover:bg-[color:var(--surface-soft)]"
           >
             Download
           </a>
+        ),
+      },
+      {
+        id: "delete",
+        header: "Delete",
+        enableSorting: false,
+        cell: ({ row }) => (
           <button
             type="button"
-            onClick={() => onDelete(item.id)}
-            disabled={isDeleting}
+            onClick={() => deleteMutation.mutate(row.original.id)}
+            disabled={deletingId === row.original.id}
             className="rounded-md border border-[#ffd5cc] px-2 py-1 text-xs font-medium text-[#a5402a] hover:bg-[color:var(--accent-coral-soft)] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {deletingId === row.original.id ? "Deleting..." : "Delete"}
           </button>
-        </div>
-      </div>
-    </li>
+        ),
+      },
+    ],
+    [deleteMutation, deletingId],
   );
-};
-
-export const DebridDownloads: React.FC = () => {
-  const { hasKey } = useDebridApiKey();
-  const { data, isLoading, error } = useDebridDownloads();
-  const deleteMutation = useDeleteDebridDownload();
 
   if (!hasKey) {
     return (
@@ -102,9 +121,6 @@ export const DebridDownloads: React.FC = () => {
     );
   }
 
-  const downloads = data ?? [];
-  const deletingId = deleteMutation.isPending ? deleteMutation.variables : null;
-
   return (
     <section className="w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-soft)] p-4">
       <h2 className="text-base font-semibold text-[color:var(--foreground)]">
@@ -113,22 +129,27 @@ export const DebridDownloads: React.FC = () => {
       {deleteMutation.error ? (
         <p className="mt-2 text-xs text-[#a5402a]">{deleteMutation.error.message}</p>
       ) : null}
-      {downloads.length === 0 ? (
-        <p className="mt-3 text-sm text-[color:var(--muted)]">
-          No downloads found.
-        </p>
-      ) : (
-        <ul className="mt-3 space-y-2">
-          {downloads.map((item) => (
-            <DownloadRow
-              key={item.id}
-              item={item}
-              isDeleting={deletingId === item.id}
-              onDelete={(id) => deleteMutation.mutate(id)}
-            />
-          ))}
-        </ul>
-      )}
+      <DataTable
+        data={downloads}
+        columns={columns}
+        emptyText="No downloads found."
+        page={currentPage}
+        pageSize={PAGE_SIZE}
+      />
+      {downloads.length > 0 ? (
+        <>
+          <p className="mt-4 text-xs uppercase tracking-[0.14em] text-[color:var(--muted)]">
+            Total rows: {downloads.length}
+          </p>
+          <PaginationControls
+            page={currentPage}
+            totalPages={totalPages}
+            onPageChange={(nextPage) =>
+              setPage(Math.min(Math.max(0, nextPage), totalPages - 1))
+            }
+          />
+        </>
+      ) : null}
     </section>
   );
 };

@@ -20,7 +20,7 @@ type TimelineItem = {
 };
 
 const panelClassName =
-  "w-full rounded-[1.4rem] border border-[#e9f0ff] bg-[linear-gradient(145deg,#ffffff,#ebf3ff)] p-5 shadow-[0_22px_34px_-30px_rgba(72,105,203,0.42),0_1px_0_rgba(255,255,255,0.95)_inset]";
+  "flex h-full w-full flex-col rounded-[1.4rem] border border-[#e9f0ff] bg-[linear-gradient(145deg,#ffffff,#ebf3ff)] p-5 shadow-[0_22px_34px_-30px_rgba(72,105,203,0.42),0_1px_0_rgba(255,255,255,0.95)_inset]";
 
 const toLocalDateString = (date: Date): string => {
   const year = date.getFullYear();
@@ -107,7 +107,7 @@ export const DebridTrafficDetails: React.FC = () => {
 
   if (error) {
     return (
-      <section className="w-full rounded-[1.4rem] border border-[#f5c5b3] bg-[linear-gradient(145deg,#fff9f5,#ffece2)] p-5 shadow-[0_20px_30px_-30px_rgba(186,88,54,0.55),0_1px_0_rgba(255,255,255,0.95)_inset]">
+      <section className="flex h-full w-full flex-col rounded-[1.4rem] border border-[#f5c5b3] bg-[linear-gradient(145deg,#fff9f5,#ffece2)] p-5 shadow-[0_20px_30px_-30px_rgba(186,88,54,0.55),0_1px_0_rgba(255,255,255,0.95)_inset]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b25533]/85">
           Traffic Analytics
         </p>
@@ -170,7 +170,7 @@ export const DebridTrafficDetails: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-4 h-72 w-full">
+      <div className="mt-4 h-72 w-full lg:h-auto lg:min-h-[18rem] lg:flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={timeline}

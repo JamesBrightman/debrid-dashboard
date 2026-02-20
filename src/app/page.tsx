@@ -1,16 +1,13 @@
+import { DebridInsightsLayout } from "@/components/compound-layouts/DebridInsightsLayout";
 import { DangerZone } from "@/components/danger-zone/DangerZone";
 import { DebridDownloads } from "@/components/debrid-response/DebridDownloads";
 import { DebridHosts } from "@/components/debrid-response/DebridHosts";
-import { DebridHostsSummary } from "@/components/debrid-response/DebridHostsSummary";
 import { DebridHostsDomains } from "@/components/debrid-response/DebridHostsDomains";
 import { DebridHostsStatus } from "@/components/debrid-response/DebridHostsStatus";
 import { DebridSettings } from "@/components/debrid-response/DebridSettings";
 import { DebridTraffic } from "@/components/debrid-response/DebridTraffic";
-import { DebridTrafficDetails } from "@/components/debrid-response/DebridTrafficDetails";
-import { DebridTorrentsActiveCount } from "@/components/debrid-response/DebridTorrentsActiveCount";
 import { DebridTorrentsAvailableHosts } from "@/components/debrid-response/DebridTorrentsAvailableHosts";
 import { DebridTorrents } from "@/components/debrid-response/DebridTorrents";
-import { DebridUser } from "@/components/debrid-response/DebridUser";
 import { UserSummary } from "@/components/UserSummary";
 
 export default function Home() {
@@ -20,26 +17,23 @@ export default function Home() {
         <UserSummary />
       </main>
 
-      <section className="mx-auto grid w-full max-w-6xl items-start gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
-          <DebridHostsSummary />
-          <DebridTorrentsActiveCount />
-          <DebridUser />
-        </div>
-        <DebridTrafficDetails />
-        <DebridDownloads />
-        <DebridTorrents />
-        <DebridTorrentsAvailableHosts />
-        <DebridSettings />
-        <DebridTraffic />
-        <div className="lg:col-span-2">
-          <DebridHosts />
-        </div>
-        <div className="lg:col-span-2">
-          <DebridHostsStatus />
-        </div>
-        <div className="lg:col-span-2">
-          <DebridHostsDomains />
+      <section className="mx-auto w-full max-w-6xl space-y-6">
+        <DebridInsightsLayout />
+        <div className="grid w-full items-start gap-6 lg:grid-cols-2">
+          <DebridDownloads />
+          <DebridTorrents />
+          <DebridTorrentsAvailableHosts />
+          <DebridSettings />
+          <DebridTraffic />
+          <div className="lg:col-span-2">
+            <DebridHosts />
+          </div>
+          <div className="lg:col-span-2">
+            <DebridHostsStatus />
+          </div>
+          <div className="lg:col-span-2">
+            <DebridHostsDomains />
+          </div>
         </div>
       </section>
 

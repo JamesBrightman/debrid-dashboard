@@ -2,6 +2,7 @@
 
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDebridTorrentsActiveCount } from "@/hooks/useDebridTorrentsActiveCount";
+import { Card } from "@/components/ui/Card";
 
 export const DebridTorrentsActiveCount: React.FC = () => {
   const { hasKey } = useDebridApiKey();
@@ -9,38 +10,38 @@ export const DebridTorrentsActiveCount: React.FC = () => {
 
   if (!hasKey) {
     return (
-      <section className="w-full rounded-xl border border-dashed border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="dashed">
         <h2 className="text-base font-semibold text-slate-900">
           Active Torrents
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Add a token to load active torrent count.
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="default">
         <h2 className="text-base font-semibold text-slate-900">
           Active Torrents
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Loading active torrent count...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-xl border border-coral-200 bg-coral-50 p-4 shadow-card-coral">
+      <Card variant="error">
         <h2 className="text-base font-semibold text-coral-800">
           Active Torrents
         </h2>
         <p className="mt-2 text-sm text-coral-800">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
@@ -49,7 +50,7 @@ export const DebridTorrentsActiveCount: React.FC = () => {
   const percentage = limit > 0 ? Math.min(100, (active / limit) * 100) : 0;
 
   return (
-    <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+    <Card variant="default">
       <h2 className="text-base font-semibold text-slate-900">
         Active Torrents
       </h2>
@@ -62,7 +63,7 @@ export const DebridTorrentsActiveCount: React.FC = () => {
           style={{ width: `${percentage}%` }}
         />
       </div>
-    </section>
+    </Card>
   );
 };
 

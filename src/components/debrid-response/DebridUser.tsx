@@ -2,6 +2,7 @@
 
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDebridUser } from "@/hooks/useDebridUser";
+import { Card } from "@/components/ui/Card";
 
 export const DebridUser: React.FC = () => {
   const { hasKey } = useDebridApiKey();
@@ -9,48 +10,48 @@ export const DebridUser: React.FC = () => {
 
   if (!hasKey) {
     return (
-      <section className="w-full rounded-xl border border-dashed border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="dashed">
         <h2 className="text-base font-semibold text-slate-900">
           User
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Add a token to load user info.
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="default">
         <h2 className="text-base font-semibold text-slate-900">
           User
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Loading user...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-xl border border-coral-200 bg-coral-50 p-4 shadow-card-coral">
+      <Card variant="error">
         <h2 className="text-base font-semibold text-coral-800">User</h2>
         <p className="mt-2 text-sm text-coral-800">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+    <Card variant="default">
       <h2 className="text-base font-semibold text-slate-900">
         User
       </h2>
       <pre className="mt-3 overflow-x-auto rounded-xl bg-zinc-950 p-3 text-xs text-zinc-100">
         {JSON.stringify(data, null, 2)}
       </pre>
-    </section>
+    </Card>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { getHostsDomains } from "@/service/debrid/debridClient";
+import { debridQueryKeys } from "@/service/debrid/queryKeys";
 import type { HostsDomainsResponse } from "@/types/response/hostsDomainsResponse";
 
 export const useDebridHostsDomains = (): UseQueryResult<
@@ -9,7 +10,7 @@ export const useDebridHostsDomains = (): UseQueryResult<
   Error
 > => {
   return useQuery({
-    queryKey: ["debrid", "hosts", "domains"],
+    queryKey: debridQueryKeys.hostsDomains,
     queryFn: getHostsDomains,
   });
 };

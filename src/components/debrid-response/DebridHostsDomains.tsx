@@ -5,15 +5,13 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useDebridHostsDomains } from "@/hooks/useDebridHostsDomains";
 import { DataTable } from "@/components/table/DataTable";
 import { PaginationControls } from "@/components/table/PaginationControls";
+import { Card } from "@/components/ui/Card";
 
 const PAGE_SIZE = 20;
 
 type HostDomainRow = {
   domain: string;
 };
-
-const panelClassName =
-  "w-full rounded-[1.4rem] border border-ocean-100 bg-gradient-to-br from-white to-ocean-50 p-5 shadow-card";
 
 export const DebridHostsDomains: React.FC = () => {
   const { data, isLoading, error } = useDebridHostsDomains();
@@ -40,7 +38,7 @@ export const DebridHostsDomains: React.FC = () => {
 
   if (isLoading) {
     return (
-      <section className={panelClassName}>
+      <Card variant="insight">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
           Network
         </p>
@@ -50,24 +48,24 @@ export const DebridHostsDomains: React.FC = () => {
         <p className="mt-3 rounded-xl border border-dashed border-sky-300 px-4 py-4 text-sm text-slate-600">
           Loading domains...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-[1.4rem] border border-coral-200 bg-gradient-to-br from-coral-50 to-coral-100 p-5 shadow-card-coral">
+      <Card variant="insightError">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-coral-700/85">
           Network
         </p>
         <h2 className="mt-2 text-lg font-semibold text-coral-700">Host Domains</h2>
         <p className="mt-3 text-sm text-coral-700">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className={panelClassName}>
+    <Card variant="insight">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
@@ -107,7 +105,7 @@ export const DebridHostsDomains: React.FC = () => {
           />
         </>
       ) : null}
-    </section>
+    </Card>
   );
 };
 

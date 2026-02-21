@@ -2,6 +2,7 @@
 
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDebridTrafficDetails } from "@/hooks/useDebridTrafficDetails";
+import { Card } from "@/components/ui/Card";
 import type { TrafficDetailsResponse } from "@/types/response/trafficDetailsResponse";
 import {
   Area,
@@ -18,9 +19,6 @@ type TimelineItem = {
   dateLabel: string;
   bytes: number;
 };
-
-const panelClassName =
-  "flex h-full w-full flex-col rounded-[1.4rem] border border-ocean-100 bg-gradient-to-br from-white to-ocean-50 p-5 shadow-card";
 
 const chartColors = {
   area: "var(--color-blue-600)",
@@ -85,7 +83,7 @@ export const DebridTrafficDetails: React.FC = () => {
 
   if (!hasKey) {
     return (
-      <section className={panelClassName}>
+      <Card variant="insightFill">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
           Traffic Analytics
         </p>
@@ -95,13 +93,13 @@ export const DebridTrafficDetails: React.FC = () => {
         <p className="mt-3 rounded-xl border border-dashed border-sky-300 px-4 py-4 text-sm text-slate-600">
           Add a token to load traffic details.
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <section className={panelClassName}>
+      <Card variant="insightFill">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
           Traffic Analytics
         </p>
@@ -111,13 +109,13 @@ export const DebridTrafficDetails: React.FC = () => {
         <p className="mt-3 rounded-xl border border-dashed border-sky-300 px-4 py-4 text-sm text-slate-600">
           Loading traffic timeline...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="flex h-full w-full flex-col rounded-[1.4rem] border border-coral-200 bg-gradient-to-br from-coral-50 to-coral-100 p-5 shadow-card-coral">
+      <Card variant="insightFillError">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-coral-700/85">
           Traffic Analytics
         </p>
@@ -125,7 +123,7 @@ export const DebridTrafficDetails: React.FC = () => {
           Traffic - Last 7 Days
         </h2>
         <p className="mt-3 text-sm text-coral-700">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
@@ -138,7 +136,7 @@ export const DebridTrafficDetails: React.FC = () => {
   );
 
   return (
-    <section className={panelClassName}>
+    <Card variant="insightFill">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
@@ -237,7 +235,7 @@ export const DebridTrafficDetails: React.FC = () => {
           </AreaChart>
         </ResponsiveContainer>
       </div>
-    </section>
+    </Card>
   );
 };
 

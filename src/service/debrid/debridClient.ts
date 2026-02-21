@@ -1,5 +1,3 @@
-"use server";
-
 import axios from "axios";
 import {
   serverTimeResponseSchema,
@@ -112,12 +110,17 @@ type GetDownloadsOptions = {
   limit?: number;
 };
 
-export const getDownloads = async (
-  token: string,
-  options?: GetDownloadsOptions,
-): Promise<DownloadsResponse> => {
-  const limitInput = options?.limit;
+type ListRequestOptions = {
+  offset?: number;
+  page?: number;
+  limit?: number;
+};
+
+const buildListRequestParams = (
+  options?: ListRequestOptions,
+): Record<string, number> | undefined => {
   const params: Record<string, number> = {};
+  const limitInput = options?.limit;
   const pageInput = options?.page;
   const offsetInput = options?.offset;
 
@@ -131,11 +134,14 @@ export const getDownloads = async (
     params.offset = Math.max(0, Math.trunc(offsetInput));
   }
 
-  const data = await debridGet(
-    "/downloads",
-    token,
-    Object.keys(params).length > 0 ? params : undefined,
-  );
+  return Object.keys(params).length > 0 ? params : undefined;
+};
+
+export const getDownloads = async (
+  token: string,
+  options?: GetDownloadsOptions,
+): Promise<DownloadsResponse> => {
+  const data = await debridGet("/downloads", token, buildListRequestParams(options));
 
   return downloadsResponseSchema.parse(data);
 };
@@ -158,20 +164,9 @@ export const getTorrents = async (
   token: string,
   options?: GetTorrentsOptions,
 ): Promise<TorrentsResponse> => {
-  const limitInput = options?.limit;
-  const params: Record<string, string | number> = {};
-  const pageInput = options?.page;
-  const offsetInput = options?.offset;
-
-  if (typeof limitInput === "number" && Number.isFinite(limitInput)) {
-    params.limit = Math.min(5000, Math.max(0, Math.trunc(limitInput)));
-  }
-
-  if (typeof pageInput === "number" && Number.isFinite(pageInput)) {
-    params.page = Math.max(0, Math.trunc(pageInput));
-  } else if (typeof offsetInput === "number" && Number.isFinite(offsetInput)) {
-    params.offset = Math.max(0, Math.trunc(offsetInput));
-  }
+  const params: Record<string, string | number> = {
+    ...(buildListRequestParams(options) ?? {}),
+  };
 
   if (options?.filter === "active") {
     params.filter = "active";

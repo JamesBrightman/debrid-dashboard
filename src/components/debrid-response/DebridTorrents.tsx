@@ -7,6 +7,7 @@ import { PaginationControls } from "@/components/table/PaginationControls";
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDebridTorrents } from "@/hooks/useDebridTorrents";
 import { useDeleteDebridTorrent } from "@/hooks/useDeleteDebridTorrent";
+import { Card } from "@/components/ui/Card";
 import type { TorrentItem } from "@/types/response/torrentsResponse";
 import { formatBytes } from "@/utils/formatBytes";
 
@@ -112,41 +113,41 @@ export const DebridTorrents: React.FC = () => {
 
   if (!hasKey) {
     return (
-      <section className="w-full rounded-xl border border-dashed border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="dashed">
         <h2 className="text-base font-semibold text-slate-900">
           Torrents
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Add a token to load torrents.
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="default">
         <h2 className="text-base font-semibold text-slate-900">
           Torrents
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Loading torrents...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-xl border border-coral-200 bg-coral-50 p-4 shadow-card-coral">
+      <Card variant="error">
         <h2 className="text-base font-semibold text-coral-800">Torrents</h2>
         <p className="mt-2 text-sm text-coral-800">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+    <Card variant="default">
       <h2 className="text-base font-semibold text-slate-900">
         Torrents
       </h2>
@@ -174,7 +175,7 @@ export const DebridTorrents: React.FC = () => {
           />
         </>
       ) : null}
-    </section>
+    </Card>
   );
 };
 

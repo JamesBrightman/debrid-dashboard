@@ -2,6 +2,7 @@
 
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { getTrafficDetails } from "@/service/debrid/debridClient";
+import { debridQueryKeys } from "@/service/debrid/queryKeys";
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import type { TrafficDetailsResponse } from "@/types/response/trafficDetailsResponse";
 
@@ -32,7 +33,7 @@ export const useDebridTrafficDetails = (): UseQueryResult<
   const range = getLast7DaysRange();
 
   return useQuery({
-    queryKey: ["debrid", "trafficDetails", range.start, range.end],
+    queryKey: debridQueryKeys.trafficDetails(range.start, range.end),
     enabled: hasKey,
     queryFn: () => getTrafficDetails(apiKey, range.start, range.end),
   });

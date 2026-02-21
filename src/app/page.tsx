@@ -16,22 +16,12 @@ export default function Home() {
 
       <section className="mx-auto w-full max-w-6xl space-y-6">
         <DebridInsightsLayout />
-        <div className="grid w-full items-start gap-6 lg:grid-cols-2">
-          <div className="lg:col-span-2">
-            <DebridDownloads />
-          </div>
-          <div className="lg:col-span-2">
-            <DebridTorrents />
-          </div>
-          <div className="lg:col-span-2">
-            <DebridHosts />
-          </div>
-          <div className="lg:col-span-2">
-            <DebridHostsStatus />
-          </div>
-          <div className="lg:col-span-2">
-            <DebridHostsDomains />
-          </div>
+        <div className="space-y-6">
+          <DebridDownloads />
+          <DebridTorrents />
+          <DebridHosts />
+          <DebridHostsStatus />
+          <DebridHostsDomains />
         </div>
       </section>
 

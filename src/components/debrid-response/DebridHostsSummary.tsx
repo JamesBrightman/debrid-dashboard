@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 import { useDebridHostsStatus } from "@/hooks/useDebridHostsStatus";
 import { HostStatusSummaryCards } from "@/components/debrid-response/HostStatusSummaryCards";
+import { Card } from "@/components/ui/Card";
 
 export const DebridHostsSummary: React.FC = () => {
   const { hasKey } = useDebridApiKey();
@@ -23,54 +24,54 @@ export const DebridHostsSummary: React.FC = () => {
 
   if (!hasKey) {
     return (
-      <section className="w-full rounded-xl border border-dashed border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="dashed">
         <h2 className="text-base font-semibold text-slate-900">
           Host health
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Add a token to load host status.
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="default">
         <h2 className="text-base font-semibold text-slate-900">
           Host health
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           Loading host status...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-xl border border-coral-200 bg-coral-50 p-4 shadow-card-coral">
+      <Card variant="error">
         <h2 className="text-base font-semibold text-coral-800">Hosts</h2>
         <p className="mt-2 text-sm text-coral-800">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
   if (Object.keys(data ?? {}).length === 0) {
     return (
-      <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+      <Card variant="default">
         <h2 className="text-base font-semibold text-slate-900">
           Host health
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           No host status found.
         </p>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className="w-full rounded-xl border border-sky-300 bg-sky-50 p-4 shadow-card">
+    <Card variant="default">
       <h2 className="text-base font-semibold text-slate-900">
         Host health
       </h2>
@@ -80,7 +81,7 @@ export const DebridHostsSummary: React.FC = () => {
         unsupportedCount={unsupportedCount}
         className="mt-3"
       />
-    </section>
+    </Card>
   );
 };
 

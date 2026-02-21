@@ -5,6 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useDebridHosts } from "@/hooks/useDebridHosts";
 import { DataTable } from "@/components/table/DataTable";
 import { PaginationControls } from "@/components/table/PaginationControls";
+import { Card } from "@/components/ui/Card";
 
 const PAGE_SIZE = 20;
 
@@ -13,9 +14,6 @@ type HostRow = {
   domain: string;
   id: string;
 };
-
-const panelClassName =
-  "w-full rounded-[1.4rem] border border-ocean-100 bg-gradient-to-br from-white to-ocean-50 p-5 shadow-card";
 
 export const DebridHosts: React.FC = () => {
   const { data, isLoading, error } = useDebridHosts();
@@ -53,7 +51,7 @@ export const DebridHosts: React.FC = () => {
 
   if (isLoading) {
     return (
-      <section className={panelClassName}>
+      <Card variant="insight">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
           Catalog
         </p>
@@ -63,13 +61,13 @@ export const DebridHosts: React.FC = () => {
         <p className="mt-3 rounded-xl border border-dashed border-sky-300 px-4 py-4 text-sm text-slate-600">
           Loading hosts...
         </p>
-      </section>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full rounded-[1.4rem] border border-coral-200 bg-gradient-to-br from-coral-50 to-coral-100 p-5 shadow-card-coral">
+      <Card variant="insightError">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-coral-700/85">
           Catalog
         </p>
@@ -77,12 +75,12 @@ export const DebridHosts: React.FC = () => {
           Supported Hosts
         </h2>
         <p className="mt-3 text-sm text-coral-700">{error.message}</p>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className={panelClassName}>
+    <Card variant="insight">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
@@ -122,7 +120,7 @@ export const DebridHosts: React.FC = () => {
           />
         </>
       ) : null}
-    </section>
+    </Card>
   );
 };
 

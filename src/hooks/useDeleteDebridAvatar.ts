@@ -6,6 +6,7 @@ import {
   type UseMutationResult,
 } from "@tanstack/react-query";
 import { deleteSettingsAvatar } from "@/service/debrid/debridClient";
+import { debridMutationKeys, debridQueryKeys } from "@/service/debrid/queryKeys";
 import { useDebridApiKey } from "@/hooks/useDebridApiKey";
 
 export const useDeleteDebridAvatar = (): UseMutationResult<void, Error, void> => {
@@ -13,7 +14,7 @@ export const useDeleteDebridAvatar = (): UseMutationResult<void, Error, void> =>
   const { apiKey, hasKey } = useDebridApiKey();
 
   return useMutation({
-    mutationKey: ["debrid", "deleteAvatar"],
+    mutationKey: debridMutationKeys.deleteAvatar,
     mutationFn: async () => {
       if (!hasKey) {
         throw new Error("Missing API key");
@@ -23,7 +24,7 @@ export const useDeleteDebridAvatar = (): UseMutationResult<void, Error, void> =>
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["debrid", "user"],
+        queryKey: debridQueryKeys.user,
       });
     },
   });

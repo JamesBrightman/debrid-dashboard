@@ -61,7 +61,7 @@ export const DebridDownloads: React.FC = () => {
             href={row.original.download}
             target="_blank"
             rel="noreferrer"
-            className="rounded-md border border-sky-300 px-2 py-1 text-xs font-medium text-slate-900 hover:bg-sky-50"
+            className="rounded-md border border-sky-300 px-2.5 py-1.5 text-xs font-medium text-slate-900 hover:bg-sky-50"
           >
             Download
           </a>
@@ -76,7 +76,7 @@ export const DebridDownloads: React.FC = () => {
             type="button"
             onClick={() => deleteMutation.mutate(row.original.id)}
             disabled={deletingId === row.original.id}
-            className="rounded-md border border-coral-200 px-2 py-1 text-xs font-medium text-coral-800 hover:bg-coral-50 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-md border border-coral-200 px-2.5 py-1.5 text-xs font-medium text-coral-800 hover:bg-coral-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {deletingId === row.original.id ? "Deleting..." : "Delete"}
           </button>

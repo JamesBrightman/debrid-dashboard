@@ -35,7 +35,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full">
+      <section className="mx-auto w-full max-w-6xl">
         <DangerZone />
       </section>
     </div>

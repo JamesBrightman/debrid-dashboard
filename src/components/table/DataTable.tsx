@@ -58,15 +58,15 @@ export function DataTable<TData extends object>({
   const visibleRows = allRows.slice(startIndex, endIndex);
 
   return (
-    <div className="mt-4 overflow-x-auto">
-      <table className="w-full min-w-[560px] border-separate border-spacing-0 text-left text-sm">
+    <div className="-mx-1 mt-4 overflow-x-auto px-1">
+      <table className="w-full min-w-[520px] border-separate border-spacing-0 text-left text-xs sm:min-w-[560px] sm:text-sm">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="border-b border-sky-300 bg-ocean-50/70 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-ocean-700"
+                  className="border-b border-sky-300 bg-ocean-50/70 px-2.5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-ocean-700 sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]"
                 >
                   {header.isPlaceholder ? null : (() => {
                     const canSort = header.column.getCanSort();
@@ -115,7 +115,10 @@ export function DataTable<TData extends object>({
               }`}
             >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-4 py-3 align-top text-[13px]">
+                <td
+                  key={cell.id}
+                  className="px-2.5 py-2.5 align-top text-[12px] sm:px-4 sm:py-3 sm:text-[13px]"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { debridQueryKeys } from "@/service/debrid/queryKeys";
 
 type DebridApiKeyContextValue = {
   apiKey: string;
@@ -35,10 +36,20 @@ export function DebridApiKeyProvider({
   useEffect(() => {
     // Hydrate token from session storage after mount to avoid SSR/client mismatch.
     const storedKey = window.sessionStorage.getItem(STORAGE_KEY) ?? "";
+
+    let isActive = true;
     queueMicrotask(() => {
+      if (!isActive) {
+        return;
+      }
+
       setApiKeyState(storedKey);
       setIsHydrated(true);
     });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const setApiKey = useCallback(
@@ -52,7 +63,7 @@ export function DebridApiKeyProvider({
       }
 
       setApiKeyState(nextKey);
-      queryClient.clear();
+      queryClient.removeQueries({ queryKey: debridQueryKeys.base });
     },
     [queryClient],
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useId } from "react";
 
 type ModalProps = {
   isOpen: boolean;
@@ -15,6 +15,29 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   children,
 }) => {
+  const titleId = useId();
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) {
     return null;
   }
@@ -24,7 +47,7 @@ export const Modal: React.FC<ModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modal-title"
+      aria-labelledby={titleId}
       onClick={onClose}
     >
       <div
@@ -32,7 +55,7 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={(event) => event.stopPropagation()}
       >
         <h3
-          id="modal-title"
+          id={titleId}
           className="text-base font-semibold text-slate-900"
         >
           {title}

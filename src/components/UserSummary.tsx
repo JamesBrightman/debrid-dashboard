@@ -2,11 +2,10 @@
 
 import { useDebridUser } from "@/hooks/useDebridUser";
 import { UserStatusBadge } from "@/components/UserStatusBadge";
-import { UserType, type UserResponse } from "@/types/response/userResponse";
+import { UserType } from "@/types/response/userResponse";
 
 export const UserSummary: React.FC = () => {
-  const { data } = useDebridUser();
-  const user = data as UserResponse | undefined;
+  const { data: user } = useDebridUser();
 
   if (!user) {
     return null;
@@ -44,7 +43,7 @@ export const UserSummary: React.FC = () => {
             Welcome{username ? `, ${username}` : ""}
           </h2>
           <div className="space-y-1 text-sm text-slate-600">
-            <p className="break-all">{user.email ?? "-"}</p>
+            <p className="break-words">{user.email ?? "-"}</p>
             <p>Points: {user.points ?? "-"}</p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <span>{expirationDate ?? "-"}</span>
@@ -63,13 +62,21 @@ export const UserSummary: React.FC = () => {
 
         <div className="h-11 w-11 shrink-0 rounded-full border-2 border-white bg-sky-50 shadow-sm sm:h-14 sm:w-14">
           {hasAvatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={user.avatar}
+              alt={`${username ?? "User"} avatar`}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              className="h-full w-full rounded-full object-cover"
+            />
+          ) : (
             <div
-              className="h-full w-full rounded-full bg-cover bg-center"
-              style={{ backgroundImage: `url(${user.avatar})` }}
-              role="img"
+              className="h-full w-full rounded-full bg-sky-100"
               aria-label={`${username ?? "User"} avatar`}
             />
-          ) : null}
+          )}
         </div>
       </div>
     </section>

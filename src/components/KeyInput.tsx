@@ -23,7 +23,7 @@ export const KeyInput: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      {/* hidden username field for password input for accessbility */}
+      {/* Hidden username field improves password-manager behavior for token input. */}
       <label htmlFor="debrid-username" className="sr-only">
         Username
       </label>
@@ -42,6 +42,7 @@ export const KeyInput: React.FC = () => {
             name="debrid_api_token"
             type={isVisible ? "text" : "password"}
             autoComplete={isVisible ? "off" : "new-password"}
+            spellCheck={false}
             className="peer w-full rounded-xl border border-sky-300 bg-sky-50 px-3 pb-2.5 pt-5 text-sm text-slate-900 outline-none transition focus:border-coral-500 focus:ring-2 focus:ring-coral-300/40"
             value={localKeyVal}
             onChange={(e) => setLocalKeyVal(e.target.value)}

@@ -63,35 +63,39 @@ export function DataTable<TData extends object>({
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="border-b border-sky-300 bg-ocean-50/70 px-2.5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-ocean-700 sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]"
-                >
-                  {header.isPlaceholder ? null : (() => {
-                    const canSort = header.column.getCanSort();
-                    const sortState = header.column.getIsSorted();
-                    const sortLabel =
-                      sortState === "asc"
-                        ? " ^"
-                        : sortState === "desc"
-                          ? " v"
-                          : "";
-                    const headerContent = (
-                      <>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        {sortLabel}
-                      </>
-                    );
+              {headerGroup.headers.map((header) => {
+                const canSort = header.column.getCanSort();
+                const sortState = header.column.getIsSorted();
+                const sortLabel =
+                  sortState === "asc"
+                    ? " ^"
+                    : sortState === "desc"
+                      ? " v"
+                      : "";
+                const ariaSort =
+                  sortState === "asc"
+                    ? "ascending"
+                    : sortState === "desc"
+                      ? "descending"
+                      : "none";
+                const headerContent = (
+                  <>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                    {sortLabel}
+                  </>
+                );
 
-                    if (!canSort) {
-                      return headerContent;
-                    }
-
-                    return (
+                return (
+                  <th
+                    key={header.id}
+                    scope="col"
+                    aria-sort={canSort ? ariaSort : undefined}
+                    className="border-b border-sky-300 bg-ocean-50/70 px-2.5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-ocean-700 sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]"
+                  >
+                    {header.isPlaceholder ? null : canSort ? (
                       <button
                         type="button"
                         onClick={header.column.getToggleSortingHandler()}
@@ -99,10 +103,12 @@ export function DataTable<TData extends object>({
                       >
                         {headerContent}
                       </button>
-                    );
-                  })()}
-                </th>
-              ))}
+                    ) : (
+                      headerContent
+                    )}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>

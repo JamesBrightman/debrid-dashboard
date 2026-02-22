@@ -44,7 +44,10 @@ export const DebridTorrents: React.FC = () => {
         header: "Name",
         accessorKey: "filename",
         cell: ({ row }) => (
-          <span className="block max-w-[18rem] truncate">
+          <span
+            className="block w-[8.5rem] whitespace-normal break-words leading-5 sm:w-[13rem] lg:w-[18rem]"
+            title={row.original.filename}
+          >
             {row.original.filename}
           </span>
         ),

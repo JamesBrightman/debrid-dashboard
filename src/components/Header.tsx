@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
               Insights from real-debrid API
             </p>
           </div>
-          <div className="md:mt-auto md:pt-0">
+          <div className="md:mt-auto md:pt-4">
             <DebridServerTime />
           </div>
         </div>

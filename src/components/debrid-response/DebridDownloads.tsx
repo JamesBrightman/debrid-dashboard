@@ -38,7 +38,10 @@ export const DebridDownloads: React.FC = () => {
         header: "Filename",
         accessorKey: "filename",
         cell: ({ row }) => (
-          <span className="block max-w-[18rem] truncate">
+          <span
+            className="block max-w-[8.5rem] whitespace-normal break-all leading-5 sm:max-w-[13rem] lg:max-w-[18rem]"
+            title={row.original.filename}
+          >
             {row.original.filename}
           </span>
         ),

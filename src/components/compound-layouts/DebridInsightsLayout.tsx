@@ -5,13 +5,13 @@ import { DebridUser } from "@/components/debrid-response/DebridUser";
 
 export const DebridInsightsLayout: React.FC = () => {
   return (
-    <div className="grid w-full gap-6 lg:grid-cols-2 lg:items-stretch">
-      <div className="order-2 space-y-6 lg:order-1">
+    <div className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch">
+      <div className="order-2 min-w-0 space-y-6 lg:order-1">
         <DebridHostsSummary />
         <DebridTorrentsActiveCount />
         <DebridUser />
       </div>
-      <div className="order-1 h-full lg:order-2">
+      <div className="order-1 min-w-0 h-full lg:order-2">
         <DebridTrafficDetails />
       </div>
     </div>

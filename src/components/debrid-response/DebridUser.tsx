@@ -48,7 +48,7 @@ export const DebridUser: React.FC = () => {
       <h2 className="text-base font-semibold text-slate-900">
         User
       </h2>
-      <pre className="mt-3 overflow-x-auto rounded-xl bg-zinc-950 p-3 text-xs text-zinc-100">
+      <pre className="mt-3 max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-xl bg-zinc-950 p-3 text-xs text-zinc-100">
         {JSON.stringify(data, null, 2)}
       </pre>
     </Card>

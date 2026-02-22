@@ -22,7 +22,7 @@ export const KeyInput: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-3">
+    <form onSubmit={handleSubmit} className="w-full">
       {/* hidden username field for password input for accessbility */}
       <label htmlFor="debrid-username" className="sr-only">
         Username
@@ -35,8 +35,8 @@ export const KeyInput: React.FC = () => {
         className="sr-only"
         tabIndex={-1}
       />
-      <div className="flex gap-2">
-        <div className="relative w-full">
+      <div className="flex min-w-0 flex-nowrap items-stretch gap-2">
+        <div className="relative min-w-0 flex-1">
           <input
             id="debrid-key"
             name="debrid_api_token"
@@ -61,7 +61,7 @@ export const KeyInput: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsVisible((prev) => !prev)}
-          className="flex items-center justify-center rounded-xl border border-sky-300 bg-sky-50 px-3 py-2 transition hover:bg-coral-50"
+          className="flex h-11 shrink-0 items-center justify-center rounded-xl border border-sky-300 bg-sky-50 px-3 py-2 transition hover:bg-coral-50"
           aria-label={isVisible ? "Hide API token" : "Show API token"}
         >
           <span className="relative block w-5 h-5">
@@ -87,17 +87,14 @@ export const KeyInput: React.FC = () => {
             />
           </span>
         </button>
+        <button
+          type="submit"
+          disabled={!hasChanged}
+          className="h-11 shrink-0 rounded-xl border border-ocean-700 bg-ocean-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-ocean-700 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 sm:text-sm"
+        >
+          Submit
+        </button>
       </div>
-      <button
-        type="submit"
-        disabled={!hasChanged}
-        className="w-full rounded-xl bg-cta-gradient px-4 py-2.5 text-sm font-semibold text-white shadow-cta transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-      >
-        Save token
-      </button>
     </form>
   );
 };
-
-
-

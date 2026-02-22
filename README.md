@@ -34,23 +34,22 @@ The purpose of this project is to let you paste a Real-Debrid API token and view
 
 ## Run Locally
 
+```bash
 1. Install dependencies:
 
-```bash
+
 npm install
-```
 
 2. Start the dev server:
 
-```bash
 npm run dev
-```
 
 3. Open:
 
-`http://localhost:3000`
+http://localhost:3000
 
 4. Paste your Real-Debrid API token into the header input and submit to load data.
+```
 
 ## Tech Stack
 
